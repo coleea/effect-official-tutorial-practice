@@ -13,7 +13,7 @@ const BarError = Data.tagged<BarError>("BarError")
 const flakyFoo = pipe(
     Random.next(),
     Effect.flatMap((n) =>
-      n > 1
+      n > 0
         ? Effect.succeed("yay!")
         : Effect.fail(FooError())
     )
@@ -22,7 +22,7 @@ const flakyFoo = pipe(
 const flakyBar = pipe(  
     Random.next(),
     Effect.flatMap((n) =>
-      n > 0
+      n > 1
         ? Effect.succeed("yay!")
         : Effect.fail(BarError())
     )
@@ -32,7 +32,7 @@ const program = pipe(
                       pipe(
                         Random.next(),
                         Effect.flatMap((n) =>
-                          n > 1
+                          n >  1
                             ? Effect.succeed("yay!")
                             : Effect.fail(FooError())
                         )
@@ -41,13 +41,16 @@ const program = pipe(
                       // Effect.zipLeft(
                       //   Effect.succeed(`effect.zipleft`)
                       // ),
-                      Effect.catchTag("FooError", (fooError) => 
-                        Effect.succeed(`Recovering from ${fooError._tag}`)
+                      // Effect.catchTag("FooError", (fooError) => 
+                      //   Effect.succeed(`Recovering from ${fooError._tag}`)
+                      // ),
+
+                      // Effect.catchAll의 단점은 : 발생한 모든 에러를 수집하지 않음
+                      Effect.catchAll((error) => 
+                        Effect.succeed(`Recovering from ${JSON.stringify(error)}`)
                       )
                     )
 
 console.log(
       Effect.runSync(program)
 );
-  
-  
