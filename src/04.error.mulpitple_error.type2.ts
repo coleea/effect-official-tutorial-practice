@@ -2,7 +2,7 @@ import * as Effect from '@effect/io/Effect'
 import * as Data from '@effect/data/Data'
 import * as Random from '@effect/io/Random'
 import {pipe} from '@effect/data/Function'
-import { tryCatch } from '@effect/io/Effect'
+// import { tryCatch } from '@effect/io/‰´
 
 interface FooError extends Data.Case {readonly _tag: "FooError"}   
 interface BarError extends Data.Case {readonly _tag: "BarError"}
